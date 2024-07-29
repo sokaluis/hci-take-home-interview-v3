@@ -13,7 +13,6 @@ _“A Health Care Informed customer needs to be able to_ **_find patient visit i
 * Don’t spend too long on it (~4 hours) and keep things simple. This is not a time limit just a guideline.
 * Clone the repo and create you're own GitHub repositiory
   * When you’re done, **send us a link to the Github project and the Loom** to vinny.lawlor@hci.care - it will be reviewed by engineering and the CTO within 2 days.
-* Add functionality to the [PatientService](https://github.com/vinnyhci/hci-take-home-interview-v2/blob/main/PatientAdministrationSystem.Application/Services/PatientsService.cs)/[IPatientService](https://github.com/vinnyhci/hci-take-home-interview-v2/blob/main/PatientAdministrationSystem.Application/Services/Interfaces/IPatientsService.cs) (app/business layer) and PatientsRepository (data layer) that query the HCIDataContext (database) and add your API contracts to the [PatientsController](https://github.com/vinnyhci/hci-take-home-interview-v2/blob/main/PatientAdministrationSystem/Controllers/PatientsController.cs). Please define strong interfaces here, return types etc.
 
 
 **Focus areas**
@@ -34,3 +33,20 @@ _“A Health Care Informed customer needs to be able to_ **_find patient visit i
 * Don't worry about implementing:
   * Authentication
   * Styling
+
+
+ **Development howto guide**
+**PatientAdministrationSystem.App**
+1. FE Application in React / Typescript built on [Vite](https://vitejs.dev/guide/)
+2. We've included Axios in the `api` folder
+3. Run using
+   
+```
+cd PatientAdministrationSystem.App
+npm install
+npm run dev
+```
+ 
+**PatientAdministrationSystem.Api**
+* BE: .NET Core solution file containing API's and in-memory database with Entity Framework ready for implementation.
+* Add functionality to the [PatientService](https://github.com/vinnyhci/hci-take-home-interview-v3/blob/main/PatientAdministrationSystem.Api/PatientAdministrationSystem.Application/Services/PatientsService.cs)/[IPatientService](https://github.com/vinnyhci/hci-take-home-interview-v3/blob/main/PatientAdministrationSystem.Api/PatientAdministrationSystem.Application/Services/Interfaces/IPatientsService.cs) (app/business layer) and PatientsRepository (data layer) that query the HCIDataContext (database) and add your API contracts to the [PatientsController](https://github.com/vinnyhci/hci-take-home-interview-v3/blob/main/PatientAdministrationSystem.Api/PatientAdministrationSystem/Controllers/PatientsController.cs). Please define strong interfaces here, return types etc.
