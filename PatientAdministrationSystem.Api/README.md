@@ -11,26 +11,24 @@ _“A Health Care Informed customer needs to be able to_ **_find patient visit i
 **Guidelines**
  
 * Don’t spend too long on it (~4 hours) and keep things simple. This is not a time limit just a guideline.
-* Clone the repo and create you're own GitHub repositiory
-  * When you’re done, **send us a link to the Github project and the Loom** to vinny.lawlor@hci.care - it will be reviewed by engineering and the CTO within 2 days.
+* Fork the repo into your own GitHub Repository. I've provided boiler plate with an in memory database and test data to help you move faster.
 * Add functionality to the [PatientService](https://github.com/vinnyhci/hci-take-home-interview-v2/blob/main/PatientAdministrationSystem.Application/Services/PatientsService.cs)/[IPatientService](https://github.com/vinnyhci/hci-take-home-interview-v2/blob/main/PatientAdministrationSystem.Application/Services/Interfaces/IPatientsService.cs) (app/business layer) and PatientsRepository (data layer) that query the HCIDataContext (database) and add your API contracts to the [PatientsController](https://github.com/vinnyhci/hci-take-home-interview-v2/blob/main/PatientAdministrationSystem/Controllers/PatientsController.cs). Please define strong interfaces here, return types etc.
-
-
-**Focus areas**
-
+* Don’t worry about:
+  * Authentication 
+  * Adding tests
 * Do focus on:
-  1. Solving the customer problem - understand the customer requirement and make sensible trade offs for feature quality versus **keeping it simple**.
-  2. Structure your front and back end code well so it's clean, modular & well organised. Attention to detail important.
-     1. Strong, best practice RESTful API design, API contracts that are clean and make sense
-     2. Validation
-     3. Error handling
-  3. Testing: Add a single test to the backend & front end - add some comments for other things you'd test
-  4. The deliverable is well packaged and easy for us to run (document in your readme.md)
-  5. Share a screen recording with a short demo of the application (max 5 mins - can use [Loom](https://www.loom.com/)) so we can see what it looks like.
-     * Bring us through the solution, talk us through how it solves the customer problem
-     * Clearly communicate any assumptions you want to make, shortcuts you take etc.
-     * Answer this question: What would you do if you had 1 more week on this? Where do you spend your time? 
-  
-* Don't worry about implementing:
-  * Authentication
-  * Styling
+  *  Solve the customer problem in any way you like
+  *  The deliverable is well packaged and easy for us to test
+  *  Clearly communicate any assumptions you want to make, shortcuts you take etc.
+  *  Spend your time in the right places based on your strengths - e.g. take shortcuts and document them if it makes sense to
+  *  Share a screen recording with a short demo of the application (max 5 mins - can use [Loom](https://www.loom.com/)) OR deploy to Azure [free tier services](https://azure.microsoft.com/en-us/pricing/free-services) so we can see what it looks like. Whatever works better for you.
+* What I'm mainly looking for:
+  * You structure your front and back end code well so it's clean, modular & well organised. Attention to detail important.
+  * How do the well do the components talk to each other on FE, API's and BE structure. These interfaces are important.
+  * You understand the customer requirement and make sensible trade offs for feature quality versus **keeping it simple**.
+  * How easy is it for us to test and run
+* Think of this like an open source project. Create a repo on Github, use git for source control, and use README.md to document what you built for the newcomer to your project, create PR’s etc like you normally would.
+
+**Next:** 
+
+* When you’re done, **send us a link to the Github project and the Azure link / Loom** to vinny.lawlor@hci.care - it will be reviewed by engineering and the CTO within 2 days.
