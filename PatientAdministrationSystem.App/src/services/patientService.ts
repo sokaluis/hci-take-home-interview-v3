@@ -1,9 +1,9 @@
-import apiClient from '../api/apiClient';
-import { PatientVisit, SearchParams } from '../types/api';
+import apiClient from "../api/apiClient";
+import { PatientVisit, SearchParams } from "../types/api";
 
 export const patientService = {
   async searchPatients(params?: SearchParams): Promise<PatientVisit[]> {
-    const response = await apiClient.get('/api/patients', { params });
+    const response = await apiClient.get("/api/patients", { params });
     return response.data;
   },
 
@@ -13,7 +13,7 @@ export const patientService = {
   },
 
   async healthCheck(): Promise<{ status: string; timestamp: string }> {
-    const response = await apiClient.get('/api/patients/health');
+    const response = await apiClient.get("/api/patients/health");
     return response.data;
-  }
-}; 
+  },
+};

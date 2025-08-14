@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using PatientAdministrationSystem.Application.Interfaces;
-using System.Diagnostics;
 
 namespace Hci.Ah.Home.Api.Gateway.Controllers.Patients;
 
@@ -27,7 +27,9 @@ public class PatientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<PatientVisitDto>>> SearchPatients([FromQuery] string? searchTerm = null)
+    public async Task<ActionResult<IEnumerable<PatientVisitDto>>> SearchPatients(
+        [FromQuery] string? searchTerm = null
+    )
     {
         var stopwatch = Stopwatch.StartNew();
         var requestId = Guid.NewGuid().ToString("N")[..8];
@@ -37,29 +39,54 @@ public class PatientsController : ControllerBase
             // Validate search term length
             if (!string.IsNullOrWhiteSpace(searchTerm) && searchTerm.Length > 100)
             {
-                _logger.LogWarning("🚫 [400] 'Search Patients' | ❌ Validation Error: Search term too long ({Length} chars) | [{RequestId}]", 
-                    searchTerm.Length, requestId);
+                _logger.LogWarning(
+                    "🚫 [400] 'Search Patients' | ❌ Validation Error: Search term too long ({Length} chars) | [{RequestId}]",
+                    searchTerm.Length,
+                    requestId
+                );
                 return BadRequest("Search term cannot exceed 100 characters");
             }
 
             var patientVisits = await _patientsService.SearchPatientsAsync(searchTerm);
             var resultCount = patientVisits.Count();
             stopwatch.Stop();
-            
+
             // Log successful response with visual indicators
-            _logger.LogInformation("✅ [200] 'Search Patients' | 📊 {Count} results | ⏱️ {ElapsedMs}ms | 🔍 '{SearchTerm}' | [{RequestId}]", 
-                resultCount, stopwatch.ElapsedMilliseconds, searchTerm ?? "all", requestId);
-            
+            _logger.LogInformation(
+                "✅ [200] 'Search Patients' | 📊 {Count} results | ⏱️ {ElapsedMs}ms | 🔍 '{SearchTerm}' | [{RequestId}]",
+                resultCount,
+                stopwatch.ElapsedMilliseconds,
+                searchTerm ?? "all",
+                requestId
+            );
+
             return Ok(patientVisits);
         }
         catch (Exception ex)
         {
             stopwatch.Stop();
-            _logger.LogError("💥 [500] 'Search Patients' | ❌ ERROR after {ElapsedMs}ms | [{RequestId}]", stopwatch.ElapsedMilliseconds, requestId);
-            _logger.LogError("🔍 Request Details: GET /api/patients?searchTerm={SearchTerm} | [{RequestId}]", searchTerm ?? "null", requestId);
-            _logger.LogError("🐛 Exception: {ExceptionType} - {Message} | [{RequestId}]", ex.GetType().Name, ex.Message, requestId);
-            _logger.LogError("📋 Stack Trace: {StackTrace} | [{RequestId}]", ex.StackTrace, requestId);
-            
+            _logger.LogError(
+                "💥 [500] 'Search Patients' | ❌ ERROR after {ElapsedMs}ms | [{RequestId}]",
+                stopwatch.ElapsedMilliseconds,
+                requestId
+            );
+            _logger.LogError(
+                "🔍 Request Details: GET /api/patients?searchTerm={SearchTerm} | [{RequestId}]",
+                searchTerm ?? "null",
+                requestId
+            );
+            _logger.LogError(
+                "🐛 Exception: {ExceptionType} - {Message} | [{RequestId}]",
+                ex.GetType().Name,
+                ex.Message,
+                requestId
+            );
+            _logger.LogError(
+                "📋 Stack Trace: {StackTrace} | [{RequestId}]",
+                ex.StackTrace,
+                requestId
+            );
+
             return StatusCode(500, "An error occurred while searching for patients");
         }
     }
@@ -83,34 +110,63 @@ public class PatientsController : ControllerBase
         {
             if (id == Guid.Empty)
             {
-                _logger.LogWarning("🚫 [400] 'Get Patient by ID' | ❌ Validation Error: Empty patient ID | [{RequestId}]", requestId);
+                _logger.LogWarning(
+                    "🚫 [400] 'Get Patient by ID' | ❌ Validation Error: Empty patient ID | [{RequestId}]",
+                    requestId
+                );
                 return BadRequest("Patient ID cannot be empty");
             }
 
             var patientVisit = await _patientsService.GetPatientVisitByIdAsync(id);
             stopwatch.Stop();
-            
+
             if (patientVisit == null)
             {
-                _logger.LogWarning("🔍 [404] 'Get Patient by ID' | ❌ Patient not found | ⏱️ {ElapsedMs}ms | 🆔 {PatientId} | [{RequestId}]", 
-                    stopwatch.ElapsedMilliseconds, id, requestId);
+                _logger.LogWarning(
+                    "🔍 [404] 'Get Patient by ID' | ❌ Patient not found | ⏱️ {ElapsedMs}ms | 🆔 {PatientId} | [{RequestId}]",
+                    stopwatch.ElapsedMilliseconds,
+                    id,
+                    requestId
+                );
                 return NotFound($"Patient with ID {id} not found");
             }
 
             // Log successful response
-            _logger.LogInformation("✅ [200] 'Get Patient by ID' | 👤 {PatientName} | ⏱️ {ElapsedMs}ms | 🆔 {PatientId} | [{RequestId}]", 
-                patientVisit.FullName, stopwatch.ElapsedMilliseconds, id, requestId);
+            _logger.LogInformation(
+                "✅ [200] 'Get Patient by ID' | 👤 {PatientName} | ⏱️ {ElapsedMs}ms | 🆔 {PatientId} | [{RequestId}]",
+                patientVisit.FullName,
+                stopwatch.ElapsedMilliseconds,
+                id,
+                requestId
+            );
 
             return Ok(patientVisit);
         }
         catch (Exception ex)
         {
             stopwatch.Stop();
-            _logger.LogError("💥 [500] 'Get Patient by ID' | ❌ ERROR after {ElapsedMs}ms | [{RequestId}]", stopwatch.ElapsedMilliseconds, requestId);
-            _logger.LogError("🔍 Request Details: GET /api/patients/{PatientId} | [{RequestId}]", id, requestId);
-            _logger.LogError("🐛 Exception: {ExceptionType} - {Message} | [{RequestId}]", ex.GetType().Name, ex.Message, requestId);
-            _logger.LogError("📋 Stack Trace: {StackTrace} | [{RequestId}]", ex.StackTrace, requestId);
-            
+            _logger.LogError(
+                "💥 [500] 'Get Patient by ID' | ❌ ERROR after {ElapsedMs}ms | [{RequestId}]",
+                stopwatch.ElapsedMilliseconds,
+                requestId
+            );
+            _logger.LogError(
+                "🔍 Request Details: GET /api/patients/{PatientId} | [{RequestId}]",
+                id,
+                requestId
+            );
+            _logger.LogError(
+                "🐛 Exception: {ExceptionType} - {Message} | [{RequestId}]",
+                ex.GetType().Name,
+                ex.Message,
+                requestId
+            );
+            _logger.LogError(
+                "📋 Stack Trace: {StackTrace} | [{RequestId}]",
+                ex.StackTrace,
+                requestId
+            );
+
             return StatusCode(500, "An error occurred while retrieving patient information");
         }
     }
@@ -125,10 +181,13 @@ public class PatientsController : ControllerBase
     {
         var requestId = Guid.NewGuid().ToString("N")[..8];
         var response = new { status = "healthy", timestamp = DateTime.UtcNow };
-        
-        _logger.LogInformation("💚 [200] 'Health Check' | ✅ API is healthy | 🕐 {Timestamp} | [{RequestId}]", 
-            DateTime.UtcNow.ToString("HH:mm:ss"), requestId);
-        
+
+        _logger.LogInformation(
+            "💚 [200] 'Health Check' | ✅ API is healthy | 🕐 {Timestamp} | [{RequestId}]",
+            DateTime.UtcNow.ToString("HH:mm:ss"),
+            requestId
+        );
+
         return Ok(response);
     }
 }
