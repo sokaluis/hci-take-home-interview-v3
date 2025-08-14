@@ -120,4 +120,12 @@ app.UseResponseCompression();
 
 app.MapControllers();
 
+// Add startup completion handler
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+    
+    logger.LogInformation("🚀 Server Ready to Use! 🚀");
+});
+
 app.Run();

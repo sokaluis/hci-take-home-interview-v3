@@ -14,7 +14,44 @@ public class PatientsRepository : IPatientsRepository
         _context = context;
     }
 
+    public async Task<IEnumerable<PatientEntity>> GetAllPatientsWithVisitsAsync()
+    {
+        return await _context.Patients
+            .Include(p => p.PatientHospitals!)
+                .ThenInclude(ph => ph.Hospital)
+            .Include(p => p.PatientHospitals!)
+                .ThenInclude(ph => ph.Visit)
+            .ToListAsync();
+    }
 
+    public async Task<IEnumerable<PatientEntity>> SearchPatientsAsync(string searchTerm)
+    {
+        var query = _context.Patients
+            .Include(p => p.PatientHospitals!)
+                .ThenInclude(ph => ph.Hospital)
+            .Include(p => p.PatientHospitals!)
+                .ThenInclude(ph => ph.Visit)
+            .AsQueryable();
 
-    // Add logic here for your querying the data context
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var lowerSearchTerm = searchTerm.ToLower();
+            query = query.Where(p => 
+                p.FirstName.ToLower().Contains(lowerSearchTerm) ||
+                p.LastName.ToLower().Contains(lowerSearchTerm) ||
+                p.Email.ToLower().Contains(lowerSearchTerm));
+        }
+
+        return await query.ToListAsync();
+    }
+
+    public async Task<PatientEntity?> GetPatientWithVisitsByIdAsync(Guid patientId)
+    {
+        return await _context.Patients
+            .Include(p => p.PatientHospitals!)
+                .ThenInclude(ph => ph.Hospital)
+            .Include(p => p.PatientHospitals!)
+                .ThenInclude(ph => ph.Visit)
+            .FirstOrDefaultAsync(p => p.Id == patientId);
+    }
 }
