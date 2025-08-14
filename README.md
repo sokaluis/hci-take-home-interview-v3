@@ -47,8 +47,13 @@ The Brief:
    
 ```
 cd PatientAdministrationSystem.App
-npm install
-npm run dev
+yarn install
+yarn dev
+```
+
+For testing:
+```
+yarn test
 ```
  
 ### PatientAdministrationSystem.Api

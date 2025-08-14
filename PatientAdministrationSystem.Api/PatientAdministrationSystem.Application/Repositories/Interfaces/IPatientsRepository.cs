@@ -5,5 +5,7 @@ namespace PatientAdministrationSystem.Application.Repositories.Interfaces;
 
 public interface IPatientsRepository
 {
-    // Add interfaces here for your repository methods
+    Task<IEnumerable<PatientEntity>> GetAllPatientsWithVisitsAsync();
+    Task<IEnumerable<PatientEntity>> SearchPatientsAsync(string searchTerm);
+    Task<PatientEntity?> GetPatientWithVisitsByIdAsync(Guid patientId);
 }

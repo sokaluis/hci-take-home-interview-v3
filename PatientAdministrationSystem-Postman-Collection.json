@@ -1,0 +1,220 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Patient Administration System API",
+		"description": "Collection for testing the Patient Administration System API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients",
+						"health"
+					]
+				},
+				"description": "Check if the API is healthy and running"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Patients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients"
+					]
+				},
+				"description": "Get all patients with their visit information"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Patients by Name - John",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients?searchTerm=John",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients"
+					],
+					"query": [
+						{
+							"key": "searchTerm",
+							"value": "John",
+							"description": "Search for patients with 'John' in name or email"
+						}
+					]
+				},
+				"description": "Search for patients containing 'John' in their name or email"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Patients by Name - Vinny",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients?searchTerm=Vinny",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients"
+					],
+					"query": [
+						{
+							"key": "searchTerm",
+							"value": "Vinny",
+							"description": "Search for patients with 'Vinny' in name or email"
+						}
+					]
+				},
+				"description": "Search for patients containing 'Vinny' in their name or email"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Patients by Email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients?searchTerm=hci.care",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients"
+					],
+					"query": [
+						{
+							"key": "searchTerm",
+							"value": "hci.care",
+							"description": "Search for patients with 'hci.care' in their email"
+						}
+					]
+				},
+				"description": "Search for patients containing 'hci.care' in their email"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient by ID - John Sweeney",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients/c00b9ff3-b1b6-42fe-8b5a-4c28408fb64a",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients",
+						"c00b9ff3-b1b6-42fe-8b5a-4c28408fb64a"
+					]
+				},
+				"description": "Get John Sweeney's patient information by his ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient by ID - Vinny Lawlor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients/1ec2d3f7-8aa8-4bf5-91b8-045378919049",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients",
+						"1ec2d3f7-8aa8-4bf5-91b8-045378919049"
+					]
+				},
+				"description": "Get Vinny Lawlor's patient information by his ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient by Invalid ID (404 Test)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients/00000000-0000-0000-0000-000000000001",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients",
+						"00000000-0000-0000-0000-000000000001"
+					]
+				},
+				"description": "Test 404 error handling with non-existent patient ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Search with Long Term (400 Test)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/patients?searchTerm=ThisIsAVeryLongSearchTermThatExceedsTheHundredCharacterLimitAndShouldReturnA400BadRequestError",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"patients"
+					],
+					"query": [
+						{
+							"key": "searchTerm",
+							"value": "ThisIsAVeryLongSearchTermThatExceedsTheHundredCharacterLimitAndShouldReturnA400BadRequestError",
+							"description": "Test 400 error handling with search term > 100 characters"
+						}
+					]
+				},
+				"description": "Test 400 error handling with search term longer than 100 characters"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5272",
+			"type": "string"
+		}
+	]
+} 
