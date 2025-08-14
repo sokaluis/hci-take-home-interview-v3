@@ -13,12 +13,15 @@ export const usePatientSearch = () => {
     setError(null);
     
     try {
-      const results = await patientService.searchPatients(
-        term ? { searchTerm: term } : undefined
-      );
+      // Simulate realistic loading time
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      const searchParams = term ? { searchTerm: term } : undefined;
+      const results = await patientService.searchPatients(searchParams);
       setPatients(results);
     } catch (err) {
-      setError('Failed to search patients. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred while searching patients';
+      setError(errorMessage);
       setPatients([]);
     } finally {
       setLoading(false);
@@ -27,9 +30,9 @@ export const usePatientSearch = () => {
 
   const clearSearch = useCallback(() => {
     setSearchTerm('');
-    setPatients([]);
     setError(null);
-  }, []);
+    searchPatients();
+  }, [searchPatients]);
 
   return {
     patients,
@@ -38,6 +41,6 @@ export const usePatientSearch = () => {
     searchTerm,
     setSearchTerm,
     searchPatients,
-    clearSearch
+    clearSearch,
   };
 }; 

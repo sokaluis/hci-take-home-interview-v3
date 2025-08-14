@@ -1,6 +1,9 @@
+import React from 'react';
+import { SearchIcon, LoadingIcon, CloseIcon } from './ui/Icons';
+
 interface SearchBarProps {
   searchTerm: string;
-  onSearchTermChange: (term: string) => void;
+  onSearchTermChange: (value: string) => void;
   onSearch: () => void;
   onClear: () => void;
   loading: boolean;
@@ -20,33 +23,28 @@ export const SearchBar = ({
 
   return (
     <form onSubmit={handleSubmit} className="search-bar">
-      <div className="search-input-group">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => onSearchTermChange(e.target.value)}
-          placeholder="Search by patient name or email..."
-          className="search-input"
-          disabled={loading}
-        />
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => onSearchTermChange(e.target.value)}
+        placeholder="Search by patient name or email..."
+        disabled={loading}
+      />
+      <button 
+        type="submit" 
+        disabled={loading}
+      >
+        {loading ? <LoadingIcon size="sm" /> : <SearchIcon size="sm" />} Search
+      </button>
+      {searchTerm && (
         <button 
-          type="submit" 
-          className="search-btn"
+          type="button" 
+          onClick={onClear}
           disabled={loading}
         >
-          {loading ? '⏳' : '🔍'} Search
+          <CloseIcon size="sm" /> Clear
         </button>
-        {searchTerm && (
-          <button 
-            type="button" 
-            onClick={onClear}
-            className="clear-btn"
-            disabled={loading}
-          >
-            ✖️ Clear
-          </button>
-        )}
-      </div>
+      )}
     </form>
   );
 }; 
